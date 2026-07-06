@@ -285,7 +285,7 @@ bool Eluna::SpellHit(Creature* me, WorldObject* caster, SpellInfo const* spell)
     START_HOOK_WITH_RETVAL(CREATURE_EVENT_ON_HIT_BY_SPELL, me, false);
     HookPush(me);
     HookPush(caster);
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CLASSIC
     HookPush(spell->ID); // Pass spell object?
 #else
     HookPush(spell->Id); // Pass spell object?
@@ -299,7 +299,7 @@ bool Eluna::SpellHitTarget(Creature* me, WorldObject* target, SpellInfo const* s
     START_HOOK_WITH_RETVAL(CREATURE_EVENT_ON_SPELL_HIT_TARGET, me, false);
     HookPush(me);
     HookPush(target);
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CLASSIC
     HookPush(spell->ID); // Pass spell object?
 #else
     HookPush(spell->Id); // Pass spell object?
