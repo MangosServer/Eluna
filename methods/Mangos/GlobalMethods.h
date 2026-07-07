@@ -2168,7 +2168,11 @@ namespace LuaGlobalFunctions
         pathEntry->from = startNode;
         pathEntry->to = nodeId - 1;
         pathEntry->price = price;
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+        pathEntry->Id = pathId;
+#else
         pathEntry->ID = pathId;
+#endif
         sTaxiPathStore.SetEntry(pathId, pathEntry);
 
         E->Push(pathId);

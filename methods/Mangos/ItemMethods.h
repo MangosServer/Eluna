@@ -271,13 +271,21 @@ namespace LuaItem
             {
                 const ItemRandomSuffixEntry* itemRandEntry = sItemRandomSuffixStore.LookupEntry(-item->GetItemRandomPropertyId());
                 if (itemRandEntry)
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+                    suffix = itemRandEntry->Name_lang;
+#else
                     suffix = itemRandEntry->nameSuffix;
+#endif
             }
             else
             {
                 const ItemRandomPropertiesEntry* itemRandEntry = sItemRandomPropertiesStore.LookupEntry(item->GetItemRandomPropertyId());
                 if (itemRandEntry)
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+                    suffix = itemRandEntry->Name_lang;
+#else
                     suffix = itemRandEntry->nameSuffix;
+#endif
             }
             if (suffix)
             {
