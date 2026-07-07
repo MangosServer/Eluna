@@ -468,7 +468,7 @@ namespace LuaGlobalFunctions
         if (!areaEntry)
             return luaL_argerror(E->L, 1, "valid Area or Zone ID expected");
 
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
         E->Push(areaEntry->AreaName_lang[locale]);
 #else
         E->Push(areaEntry->area_name[locale]);
@@ -2087,7 +2087,7 @@ namespace LuaGlobalFunctions
             TaxiPathNodeEntry entry;
 
             // mandatory
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
             entry.ContinentID = E->CHECKVAL<uint32>(start);
             entry.LocX = E->CHECKVAL<float>(start + 1);
             entry.LocY = E->CHECKVAL<float>(start + 2);
@@ -2099,7 +2099,7 @@ namespace LuaGlobalFunctions
             entry.z = E->CHECKVAL<float>(start + 3);
 #endif
             // optional
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
             entry.Flags = E->CHECKVAL<uint32>(start + 4, 0);
             entry.Delay = E->CHECKVAL<uint32>(start + 5, 0);
 #else
@@ -2137,11 +2137,15 @@ namespace LuaGlobalFunctions
             TaxiPathNodeEntry& entry = *it;
             TaxiNodesEntry* nodeEntry = new TaxiNodesEntry();
 
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
             entry.PathID = pathId;
             entry.NodeIndex = nodeId;
             nodeEntry->ID = index;
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+            nodeEntry->ContinentID = entry.ContinentID;
+#else
             nodeEntry->map_id = entry.ContinentID;
+#endif
             nodeEntry->x = entry.LocX;
             nodeEntry->y = entry.LocY;
             nodeEntry->z = entry.LocZ;
@@ -2149,11 +2153,7 @@ namespace LuaGlobalFunctions
             entry.path = pathId;
             entry.index = nodeId;
             nodeEntry->ID = index;
-#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
-            nodeEntry->ContinentID = entry.mapid;
-#else
             nodeEntry->map_id = entry.mapid;
-#endif
             nodeEntry->x = entry.x;
             nodeEntry->y = entry.y;
             nodeEntry->z = entry.z;
