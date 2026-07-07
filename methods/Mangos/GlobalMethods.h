@@ -2149,7 +2149,11 @@ namespace LuaGlobalFunctions
             entry.path = pathId;
             entry.index = nodeId;
             nodeEntry->ID = index;
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+            nodeEntry->ContinentID = entry.mapid;
+#else
             nodeEntry->map_id = entry.mapid;
+#endif
             nodeEntry->x = entry.x;
             nodeEntry->y = entry.y;
             nodeEntry->z = entry.z;

@@ -948,7 +948,7 @@ namespace LuaUnit
         if (!entry)
             return 1;
 
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
         E->Push(entry->Name_lang[locale]);
 #else
         E->Push(entry->name[locale]);
@@ -987,7 +987,7 @@ namespace LuaUnit
         if (!entry)
             return 1;
 
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
         E->Push(entry->Name_lang[locale]);
 #else
         E->Push(entry->name[locale]);
