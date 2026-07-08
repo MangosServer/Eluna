@@ -54,7 +54,7 @@ namespace LuaSpell
      */
     int GetEntry(Eluna* E, Spell* spell)
     {
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
         E->Push(spell->m_spellInfo->ID);
 #else
         E->Push(spell->m_spellInfo->Id);

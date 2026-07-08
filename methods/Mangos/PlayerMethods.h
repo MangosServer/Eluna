@@ -2078,7 +2078,11 @@ namespace LuaPlayer
 
         WorldPacket data(MSG_AUCTION_HELLO, 12);
         data << unit->GET_GUID();
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+        data << uint32(ahEntry->ID);
+#else
         data << uint32(ahEntry->houseId);
+#endif
         data << uint8(1);
 
         player->GetSession()->SendPacket(&data);
@@ -2978,7 +2982,7 @@ namespace LuaPlayer
         {
             if (SkillLineEntry const* entry = sSkillLineStore.LookupEntry(i))
             {
-#if ELUNA_EXPANSION == EXP_CLASSIC
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
                 if (entry->CategoryID == SKILL_CATEGORY_LANGUAGES || entry->CategoryID == SKILL_CATEGORY_GENERIC)
                     continue;
 
