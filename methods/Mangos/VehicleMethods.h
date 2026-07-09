@@ -46,7 +46,11 @@ namespace LuaVehicle
      */
     int GetEntry(Eluna* E, Vehicle* vehicle)
     {
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_WOTLK
+        E->Push(vehicle->GetVehicleEntry()->ID);
+#else
         E->Push(vehicle->GetVehicleEntry()->m_ID);
+#endif
         return 1;
     }
 
