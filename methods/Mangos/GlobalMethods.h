@@ -468,7 +468,7 @@ namespace LuaGlobalFunctions
         if (!areaEntry)
             return luaL_argerror(E->L, 1, "valid Area or Zone ID expected");
 
-#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
         E->Push(areaEntry->AreaName_lang[locale]);
 #else
         E->Push(areaEntry->area_name[locale]);
@@ -2087,7 +2087,7 @@ namespace LuaGlobalFunctions
             TaxiPathNodeEntry entry;
 
             // mandatory
-#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
             entry.ContinentID = E->CHECKVAL<uint32>(start);
             entry.LocX = E->CHECKVAL<float>(start + 1);
             entry.LocY = E->CHECKVAL<float>(start + 2);
@@ -2099,7 +2099,7 @@ namespace LuaGlobalFunctions
             entry.z = E->CHECKVAL<float>(start + 3);
 #endif
             // optional
-#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
             entry.Flags = E->CHECKVAL<uint32>(start + 4, 0);
             entry.Delay = E->CHECKVAL<uint32>(start + 5, 0);
 #else
@@ -2137,11 +2137,11 @@ namespace LuaGlobalFunctions
             TaxiPathNodeEntry& entry = *it;
             TaxiNodesEntry* nodeEntry = new TaxiNodesEntry();
 
-#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC)
+#if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
             entry.PathID = pathId;
             entry.NodeIndex = nodeId;
             nodeEntry->ID = index;
-#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
+#if defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK)
             nodeEntry->ContinentID = entry.ContinentID;
 #else
             nodeEntry->map_id = entry.ContinentID;
@@ -2169,9 +2169,15 @@ namespace LuaGlobalFunctions
 
         sTaxiPathSetBySource[startNode][nodeId - 1] = TaxiPathBySourceAndDestination(pathId, price);
         TaxiPathEntry* pathEntry = new TaxiPathEntry();
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_WOTLK
+        pathEntry->FromTaxiNode = startNode;
+        pathEntry->ToTaxiNode = nodeId - 1;
+        pathEntry->Cost = price;
+#else
         pathEntry->from = startNode;
         pathEntry->to = nodeId - 1;
         pathEntry->price = price;
+#endif
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
         pathEntry->Id = pathId;
 #else

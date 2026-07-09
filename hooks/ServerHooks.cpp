@@ -117,7 +117,7 @@ bool Eluna::OnAreaTrigger(Player* pPlayer, AreaTriggerEntry const* pTrigger)
     HookPush(pTrigger->ID);
 #elif defined ELUNA_AZEROTHCORE
     HookPush(pTrigger->entry);
-#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CLASSIC
+#elif defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_CLASSIC || ELUNA_EXPANSION == EXP_WOTLK)
     HookPush(pTrigger->ID);
 #else
     HookPush(pTrigger->id);
