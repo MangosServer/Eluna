@@ -1752,7 +1752,7 @@ namespace LuaGlobalFunctions
 
         auto const itemlist = items->m_items;
         for (auto itr = itemlist.begin(); itr != itemlist.end(); ++itr)
-#if ELUNA_EXPANSION == EXP_CATA
+#if ELUNA_EXPANSION >= EXP_CATA
             eObjectMgr->RemoveVendorItem(entry, (*itr)->item, (*itr)->type);
 #else
             eObjectMgr->RemoveVendorItem(entry, (*itr)->item);

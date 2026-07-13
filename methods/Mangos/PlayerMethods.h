@@ -732,7 +732,7 @@ namespace LuaPlayer
      */
     int GetShieldBlockValue(Eluna* E, Player* player)
     {
-#if ELUNA_EXPANSION == EXP_CATA
+#if ELUNA_EXPANSION >= EXP_CATA
         E->Push(player->GetShieldBlockDamageValue());
 #else
         E->Push(player->GetShieldBlockValue());
