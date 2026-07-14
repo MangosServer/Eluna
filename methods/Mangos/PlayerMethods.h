@@ -2426,7 +2426,7 @@ namespace LuaPlayer
      */
     int ResetTalentsCost(Eluna* E, Player* player)
     {
-#ifdef CATA
+#if defined(CATA) || defined(MISTS)
         E->Push(player->GetNextResetTalentsCost());
 #else
         E->Push(player->resetTalentsCost());
