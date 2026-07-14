@@ -732,7 +732,7 @@ namespace LuaPlayer
      */
     int GetShieldBlockValue(Eluna* E, Player* player)
     {
-#if ELUNA_EXPANSION == EXP_CATA
+#if ELUNA_EXPANSION >= EXP_CATA
         E->Push(player->GetShieldBlockDamageValue());
 #else
         E->Push(player->GetShieldBlockValue());
@@ -2080,6 +2080,8 @@ namespace LuaPlayer
         data << unit->GET_GUID();
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
         data << uint32(ahEntry->ID);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        data << uint32(ahEntry->ID);
 #else
         data << uint32(ahEntry->houseId);
 #endif
@@ -2424,7 +2426,7 @@ namespace LuaPlayer
      */
     int ResetTalentsCost(Eluna* E, Player* player)
     {
-#ifdef CATA
+#if defined(CATA) || defined(MISTS)
         E->Push(player->GetNextResetTalentsCost());
 #else
         E->Push(player->resetTalentsCost());
@@ -2983,6 +2985,12 @@ namespace LuaPlayer
             if (SkillLineEntry const* entry = sSkillLineStore.LookupEntry(i))
             {
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
+                if (entry->CategoryID == SKILL_CATEGORY_LANGUAGES || entry->CategoryID == SKILL_CATEGORY_GENERIC)
+                    continue;
+
+                if (player->HasSkill(entry->ID))
+                    player->UpdateSkill(entry->ID, step);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
                 if (entry->CategoryID == SKILL_CATEGORY_LANGUAGES || entry->CategoryID == SKILL_CATEGORY_GENERIC)
                     continue;
 

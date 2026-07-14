@@ -708,7 +708,7 @@ namespace LuaCreature
      */
     int GetShieldBlockValue(Eluna* E, Creature* creature)
     {
-#if ELUNA_EXPANSION == EXP_CATA
+#if ELUNA_EXPANSION >= EXP_CATA
         E->Push(creature->GetShieldBlockDamageValue());
 #else
         E->Push(creature->GetShieldBlockValue());

@@ -56,6 +56,8 @@ namespace LuaSpell
     {
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
         E->Push(spell->m_spellInfo->ID);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        E->Push(spell->m_spellInfo->ID);
 #else
         E->Push(spell->m_spellInfo->Id);
 #endif

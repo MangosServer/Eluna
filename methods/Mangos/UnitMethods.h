@@ -950,6 +950,8 @@ namespace LuaUnit
 
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
         E->Push(entry->Name_lang[locale]);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        E->Push(entry->Name_lang[locale]);
 #else
         E->Push(entry->name[locale]);
 #endif
@@ -988,6 +990,8 @@ namespace LuaUnit
             return 1;
 
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
+        E->Push(entry->Name_lang[locale]);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         E->Push(entry->Name_lang[locale]);
 #else
         E->Push(entry->name[locale]);
@@ -2186,7 +2190,7 @@ namespace LuaUnit
 
         for (uint32 i = 0; i < MAX_EFFECT_INDEX; ++i)
         {
-#if ELUNA_EXPANSION == EXP_CATA
+#if ELUNA_EXPANSION >= EXP_CATA
             SpellEffectEntry const* spellEffect = spellEntry->GetSpellEffect(SpellEffectIndex(i));
             uint8 eff = spellEffect->Effect;
 #else

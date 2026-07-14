@@ -13,6 +13,7 @@
 #define EXP_TBC 1
 #define EXP_WOTLK 2
 #define EXP_CATA 3
+#define EXP_MISTS 4
 
 #if !defined ELUNA_CMANGOS
 #include "SharedDefines.h"
