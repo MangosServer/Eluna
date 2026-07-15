@@ -48,6 +48,8 @@ namespace LuaVehicle
     {
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_WOTLK
         E->Push(vehicle->GetVehicleEntry()->ID);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+        E->Push(vehicle->GetVehicleEntry()->ID);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         E->Push(vehicle->GetVehicleEntry()->ID);
 #else

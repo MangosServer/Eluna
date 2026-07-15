@@ -950,6 +950,8 @@ namespace LuaUnit
 
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
         E->Push(entry->Name_lang[locale]);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+        E->Push(entry->Name_lang[locale]);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         E->Push(entry->Name_lang[locale]);
 #else
@@ -990,6 +992,8 @@ namespace LuaUnit
             return 1;
 
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
+        E->Push(entry->Name_lang[locale]);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
         E->Push(entry->Name_lang[locale]);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         E->Push(entry->Name_lang[locale]);
