@@ -2080,6 +2080,8 @@ namespace LuaPlayer
         data << unit->GET_GUID();
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
         data << uint32(ahEntry->ID);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+        data << uint32(ahEntry->ID);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         data << uint32(ahEntry->ID);
 #else
@@ -2985,6 +2987,12 @@ namespace LuaPlayer
             if (SkillLineEntry const* entry = sSkillLineStore.LookupEntry(i))
             {
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
+                if (entry->CategoryID == SKILL_CATEGORY_LANGUAGES || entry->CategoryID == SKILL_CATEGORY_GENERIC)
+                    continue;
+
+                if (player->HasSkill(entry->ID))
+                    player->UpdateSkill(entry->ID, step);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
                 if (entry->CategoryID == SKILL_CATEGORY_LANGUAGES || entry->CategoryID == SKILL_CATEGORY_GENERIC)
                     continue;
 

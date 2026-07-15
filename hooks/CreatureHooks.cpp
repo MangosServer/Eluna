@@ -287,6 +287,8 @@ bool Eluna::SpellHit(Creature* me, WorldObject* caster, SpellInfo const* spell)
     HookPush(caster);
 #if defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_CLASSIC || ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK || ELUNA_EXPANSION == EXP_MISTS)
     HookPush(spell->ID); // Pass spell object?
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+    HookPush(spell->ID); // Pass spell object?
 #else
     HookPush(spell->Id); // Pass spell object?
 #endif
@@ -300,6 +302,8 @@ bool Eluna::SpellHitTarget(Creature* me, WorldObject* target, SpellInfo const* s
     HookPush(me);
     HookPush(target);
 #if defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_CLASSIC || ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK || ELUNA_EXPANSION == EXP_MISTS)
+    HookPush(spell->ID); // Pass spell object?
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
     HookPush(spell->ID); // Pass spell object?
 #else
     HookPush(spell->Id); // Pass spell object?

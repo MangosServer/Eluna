@@ -470,6 +470,8 @@ namespace LuaGlobalFunctions
 
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
         E->Push(areaEntry->AreaName_lang[locale]);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+        E->Push(areaEntry->AreaName_lang[locale]);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         E->Push(areaEntry->AreaName_lang[locale]);
 #else
@@ -2094,6 +2096,11 @@ namespace LuaGlobalFunctions
             entry.LocX = E->CHECKVAL<float>(start + 1);
             entry.LocY = E->CHECKVAL<float>(start + 2);
             entry.LocZ = E->CHECKVAL<float>(start + 3);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+            entry.ContinentID = E->CHECKVAL<uint32>(start);
+            entry.Loc_0 = E->CHECKVAL<float>(start + 1);
+            entry.Loc_1 = E->CHECKVAL<float>(start + 2);
+            entry.Loc_2 = E->CHECKVAL<float>(start + 3);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
             entry.ContinentID = E->CHECKVAL<uint32>(start);
             entry.x = E->CHECKVAL<float>(start + 1);
@@ -2107,6 +2114,9 @@ namespace LuaGlobalFunctions
 #endif
             // optional
 #if ELUNA_EXPANSION == EXP_CLASSIC || (defined(ELUNA_MANGOS) && (ELUNA_EXPANSION == EXP_TBC || ELUNA_EXPANSION == EXP_WOTLK))
+            entry.Flags = E->CHECKVAL<uint32>(start + 4, 0);
+            entry.Delay = E->CHECKVAL<uint32>(start + 5, 0);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
             entry.Flags = E->CHECKVAL<uint32>(start + 4, 0);
             entry.Delay = E->CHECKVAL<uint32>(start + 5, 0);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
@@ -2159,6 +2169,14 @@ namespace LuaGlobalFunctions
             nodeEntry->x = entry.LocX;
             nodeEntry->y = entry.LocY;
             nodeEntry->z = entry.LocZ;
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
+            entry.PathID = pathId;
+            entry.NodeIndex = nodeId;
+            nodeEntry->ID = index;
+            nodeEntry->ContinentID = entry.ContinentID;
+            nodeEntry->Pos_0 = entry.Loc_0;
+            nodeEntry->Pos_1 = entry.Loc_1;
+            nodeEntry->Pos_2 = entry.Loc_2;
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
             entry.PathID = pathId;
             entry.NodeIndex = nodeId;
@@ -2188,6 +2206,10 @@ namespace LuaGlobalFunctions
         sTaxiPathSetBySource[startNode][nodeId - 1] = TaxiPathBySourceAndDestination(pathId, price);
         TaxiPathEntry* pathEntry = new TaxiPathEntry();
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_WOTLK
+        pathEntry->FromTaxiNode = startNode;
+        pathEntry->ToTaxiNode = nodeId - 1;
+        pathEntry->Cost = price;
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
         pathEntry->FromTaxiNode = startNode;
         pathEntry->ToTaxiNode = nodeId - 1;
         pathEntry->Cost = price;
