@@ -2072,6 +2072,9 @@ namespace LuaPlayer
     {
         Unit* unit = E->CHECKOBJ<Unit>(2);
 
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        player->GetSession()->SendAuctionHello(unit);
+#else
         AuctionHouseEntry const* ahEntry = AuctionHouseMgr::GetAuctionHouseEntry(unit);
         if (!ahEntry)
             return 0;
@@ -2080,14 +2083,13 @@ namespace LuaPlayer
         data << unit->GET_GUID();
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
         data << uint32(ahEntry->ID);
-#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
-        data << uint32(ahEntry->ID);
 #else
         data << uint32(ahEntry->houseId);
 #endif
         data << uint8(1);
 
         player->GetSession()->SendPacket(&data);
+#endif
         return 0;
     }
 
