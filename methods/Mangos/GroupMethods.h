@@ -365,6 +365,10 @@ namespace LuaGroup
 
 #if (defined(CLASSIC) || defined(TBC))
         group->SetTargetIcon(icon, target);
+#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        // MoP (mangos-four) restored raid markers with a fourth "context" argument on
+        // Group::SetTargetIcon; 0 selects a normal target-icon set (see GroupHandler).
+        group->SetTargetIcon(icon, setter, target, 0);
 #else
         group->SetTargetIcon(icon, setter, target);
 #endif
