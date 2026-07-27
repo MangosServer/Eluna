@@ -2072,24 +2072,23 @@ namespace LuaPlayer
     {
         Unit* unit = E->CHECKOBJ<Unit>(2);
 
+        // 5.4.8 split the bidirectional MSG_AUCTION_HELLO into CMSG_/SMSG_
+        // halves AND moved the body to the 18414 grammar, so the opcode alone
+        // is not enough: building the packet here would emit the pre-18414
+        // body under the new opcode. Four must reuse the converted server
+        // sender, which writes the proved layout.
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        player->GetSession()->SendAuctionHello(unit);
+#else
         AuctionHouseEntry const* ahEntry = AuctionHouseMgr::GetAuctionHouseEntry(unit);
         if (!ahEntry)
             return 0;
 
-        // 5.4.8 split the bidirectional MSG_AUCTION_HELLO into CMSG_/SMSG_
-        // halves, so MangosFour has no MSG_ name to reach for. This is the
-        // server-to-client half.
-#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
-        WorldPacket data(SMSG_AUCTION_HELLO, 12);
-#else
         WorldPacket data(MSG_AUCTION_HELLO, 12);
-#endif
         data << unit->GET_GUID();
 #if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_TBC
         data << uint32(ahEntry->ID);
 #elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_CATA
-        data << uint32(ahEntry->ID);
-#elif defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
         data << uint32(ahEntry->ID);
 #else
         data << uint32(ahEntry->houseId);
@@ -2097,6 +2096,7 @@ namespace LuaPlayer
         data << uint8(1);
 
         player->GetSession()->SendPacket(&data);
+#endif
         return 0;
     }
 
