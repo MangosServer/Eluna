@@ -1878,8 +1878,8 @@ namespace LuaGlobalFunctions
      * @param uint32 senderGUIDLow = 0 : low GUID of the sender
      * @param [MailStationery] stationary = MAIL_STATIONERY_DEFAULT : type of mail that is being sent as, refer to MailStationery above
      * @param uint32 delay = 0 : mail send delay in milliseconds
-     * @param uint32 money = 0 : money to send
-     * @param uint32 cod = 0 : cod money amount
+     * @param uint64 money = 0 : money to send (uint32 before Mists)
+     * @param uint64 cod = 0 : cod money amount (uint32 before Mists)
      * @param uint32 entry = 0 : entry of an [Item] to send with mail
      * @param uint32 amount = 0 : amount of the [Item] to send with mail
      * @return uint32 itemGUIDlow : low GUID of the item. Up to 12 values returned, returns nil if no further items are sent
@@ -1893,8 +1893,13 @@ namespace LuaGlobalFunctions
         uint32 senderGUIDLow = E->CHECKVAL<uint32>(++i, 0);
         uint32 stationary = E->CHECKVAL<uint32>(++i, MAIL_STATIONERY_DEFAULT);
         uint32 delay = E->CHECKVAL<uint32>(++i, 0);
+#if defined(ELUNA_MANGOS) && ELUNA_EXPANSION == EXP_MISTS
+        uint64 money = E->CHECKVAL<uint64>(++i, 0);
+        uint64 cod = E->CHECKVAL<uint64>(++i, 0);
+#else
         uint32 money = E->CHECKVAL<uint32>(++i, 0);
         uint32 cod = E->CHECKVAL<uint32>(++i, 0);
+#endif
         int argAmount = lua_gettop(E->L);
 
         MailSender sender(MAIL_NORMAL, senderGUIDLow, (MailStationery)stationary);

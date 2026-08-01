@@ -535,6 +535,22 @@ static unsigned int CheckUnsignedRange(lua_State* luastate, int narg, unsigned i
     return static_cast<unsigned int>(value);
 }
 
+static unsigned long long CheckUnsignedLongLong(lua_State* luastate, int narg)
+{
+    double value = luaL_checknumber(luastate, narg);
+
+    if (!(value >= 0))
+        return luaL_argerror(luastate, narg, "value must be greater than or equal to 0");
+
+    // Lua 5.2 numbers are doubles. Larger integers must use Eluna's BigInt
+    // userdata or they cannot be represented exactly before this conversion.
+    constexpr double MAX_SAFE_LUA_INTEGER = 9007199254740991.0;
+    if (value > MAX_SAFE_LUA_INTEGER)
+        return luaL_argerror(luastate, narg, "value exceeds the exact Lua number range");
+
+    return static_cast<unsigned long long>(value);
+}
+
 template<> bool Eluna::CHECKVAL<bool>(int narg)
 {
     return lua_toboolean(L, narg) != 0;
@@ -588,7 +604,7 @@ template<> long long Eluna::CHECKVAL<long long>(int narg)
 template<> unsigned long long Eluna::CHECKVAL<unsigned long long>(int narg)
 {
     if (lua_isnumber(L, narg))
-        return static_cast<unsigned long long>(CHECKVAL<uint32>(narg));
+        return CheckUnsignedLongLong(L, narg);
     return *(Eluna::CHECKOBJ<unsigned long long>(narg, true));
 }
 template<> long Eluna::CHECKVAL<long>(int narg)
